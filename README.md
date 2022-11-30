@@ -1,6 +1,59 @@
-# s
-f
-Whenever the availability of speech recognition services changes, the [SFSpeechRecognizer](https://developer.apple.com/documentation/speech/sfspeechrecognizer) object notifies its delegate. SpokenWord provides a delegate object and implements the [speechRecognizer(_:availabilityDidChange:)](https://developer.apple.com/documentation/speech/sfspeechrecognizerdelegate/1649879-speechrecognizer) method to respond to availability changes. When services become unavailable, the method disables the Start Recording button and updates its title. When services become available, the method reenables the button and restores its original title.  f
-Whenever the availability of speech recognition services changes, the [SFSpeechRecognizer](https://developer.apple.com/documentation/speech/sfspeechrecognizer) object notifies its delegate. SpokenWord provides a delegate object and implements the [speechRecognizer(_:availabilityDidChange:)](https://developer.apple.com/documentation/speech/sfspeechrecognizerdelegate/1649879-speechrecognizer) method to respond to availability changes. When services become unavailable, the method disables the Start Recording button and updates its title. When services become available, the method reenables the button and restores its original title.  f
-Whenever the availability of speech recognition services changes, the [SFSpeechRecognizer](https://developer.apple.com/documentation/speech/sfspeechrecognizer) object notifies its delegate. SpokenWord provides a delegate object and implements the [speechRecognizer(_:availabilityDidChange:)](https://developer.apple.com/documentation/speech/sfspeechrecognizerdelegate/1649879-speechrecognizer) method to respond to availability changes. When services become unavailable, the method disables the Start Recording button and updates its title. When services become available, the method reenables the button and restores its original title.  jai
-Whenever the availability of speech recognition services changes, the [SFSpeechRecognizer](https://developer.apple.com/documentation/speech/sfspeechrecognizer) object notifies its delegate. SpokenWord provides a delegate object and implements the [speechRecognizer(_:availabilityDidChange:)](https://developer.apple.com/documentation/speech/sfspeechrecognizerdelegate/1649879-speechrecognizer) method to respond to availability changes. When services become unavailable, the method disables the Start Recording button and updates its title. When services become available, the method reenables the button and restores its original title.  
+# speech-to-excel
+
+本ソフトウェアは高専の卒業研究で作成した、音声で帳票入力を行うiOSアプリです。基本的にはiPadでの動作を想定しています。
+
+音声認識のエンジンとしてAppleのSpeech Recognition APIを用いました。このAPIはオフラインでの動作も可能です。
+
+以下に議事録作成を想定した入力画面を示します。
+
+<img width="410" alt="スクリーンショット 2022-11-30 11 59 36" src="https://user-images.githubusercontent.com/92070786/204697241-fa38776e-fc54-4233-a02c-dc121f8c8545.png">
+
+## 基本動作
+
+1. 項目 (左側の列) を外部ファイルから取り込む. 
+2. ページを選択する.
+3. スタートボタンを押す.
+4. 項目の名前を言う.
+5. その項目に対応する内容 (右側の列) を音声により入力する. 
+6. 外部ファイルとして保存する.
+
+## 実装した機能
+
+(a) ページ選択
+
+PickerView でページを選択して”Enter”ボタンを押すことにより, 帳票や議事録などを複数 ページ作ることができる.
+
+(b) 呼ばれた項目の明確化
+
+項目名 (左側の列) が呼ばれたとき, どれが呼ばれたかを明確にするために呼ばれた項目の文 字が赤色になる.
+
+(c) 確定処理
+
+次の項目に移る前に「確定」と言うことにより, 内容を確定できる. これにより後から認識結 果が変更されることを防ぎ, 次の項目に移ることを明確にする. 確定処理が行われたセルの 文字は赤色になる. また,「(項目名)+ 消去」と言うことで確定後のセルも内容を修正できる.
+
+(d) セルの幅の変更
+
+セルの幅 (高さ) を一定ではなく, 特定のセルだけ幅を広くしている. 作成したシステムでは 議事録入力の用途ために, 項目名が”内容”のときは幅が広くなるようにしている. また幅を 広くしたセルにだけ複数行の入力を認めている.
+
+(e) 数値入力セルの設定
+
+項目名のセルをタップしチェックマークをつけることで, その項目の内容には数値の入力し か認めない. 数値以外の入力が試みられると”Only Number”表示される. この設定は帳票入 力を想定している.
+
+(f) リセット
+
+”Reset”ボタンを押すことにより今いるページの内容をリセットすることができる.
+
+(g) 終了
+
+「終了」と言うことで音声認識を終了させることができる. ”Stop Recording”ボタンでも音
+声認識を終了させることができる.
+
+(h) 項目の外部取り込み
+
+アプリを開いたときに項目名は自動で外部ファイルから取り込まれる. この外部ファイルは, iPad(iPhone) 内の本アプリのフォルダに入っている”test1.csv”, ”test2.csv”, ”test3.csv” に対応する. それぞれページ 1, ページ 2, ページ 3 に対応する. また, 取り込みに失敗したと きは”Read failure”というメッセージが表示される.
+
+(i) 外部ファイル出力
+
+音声認識中に「保存」と言う, もしくは”save”ボタンを押すことにより外部ファイルとし て出力させることができる. 保存されたファイルは iPad(iPhone) 内の本アプリのフォルダ に”data1.csv”, ”data2.csv”, ”data3.csv”として保存される. それぞれページ 1, ページ 2, ページ 3 に対応する. また, 保存が完了した場合は 5 秒間”csv saved”というメッセージが表示される.
+
+<img width="869" alt="スクリーンショット 2022-11-30 12 05 41" src="https://user-images.githubusercontent.com/92070786/204697999-ac038f37-65cf-4f1d-a409-d4414baf5197.png">
